@@ -19,22 +19,22 @@ BigInt::BigInt(long long number)
 
 BigInt::BigInt(vector<int> nums, bool is_neg)
 {
-	numbers = nums;
+	digits = nums;
 	_isNegative = is_neg;
 }
 
 BigInt::BigInt(const BigInt &obj) {
 	_isNegative = obj.IsNegative();
 
-	for (int t : obj.numbers)
+	for (int t : obj.digits)
 	{
-		numbers.push_back(t);
+		digits.push_back(t);
 	}
 }
 
 int BigInt::getLength() const
 {
-	return numbers.size();
+	return digits.size();
 }
 
 bool BigInt::IsNegative() const
@@ -93,7 +93,7 @@ BigInt& BigInt::operator+=(const BigInt& number)
 
 	auto reverse_result = Reverse(result);
 
-	(*this).numbers = reverse_result;
+	(*this).digits = reverse_result;
 
 	return *this;
 }
@@ -137,7 +137,7 @@ BigInt& BigInt::operator-=(const BigInt& number)
 	{
 		vector<int> t;
 		t.push_back(0);
-		numbers = t;
+		digits = t;
 		return *this;
 	}
 
@@ -188,7 +188,7 @@ BigInt& BigInt::operator-=(const BigInt& number)
 		}
 	}
 
-	(*this).numbers = clearResult;
+	(*this).digits = clearResult;
 
 	if (!IsNegative() && !number.IsNegative())
 	{
@@ -209,10 +209,10 @@ BigInt& BigInt::operator-=(const BigInt& number)
 	return *this;
 }
 
-BigInt& BigInt::operator*=(const BigInt& number2)
+BigInt& BigInt::operator*=(const BigInt& number)
 {
-	auto a = Reverse(numbers);
-	auto b = Reverse(number2.numbers);
+	auto a = Reverse(digits);
+	auto b = Reverse(number.digits);
 	vector<int> c(a.size() + b.size(), 0);
 	for (auto i = 0; i < a.size(); i++)
 	{
@@ -229,12 +229,12 @@ BigInt& BigInt::operator*=(const BigInt& number2)
 		c.pop_back();
 	}
 	auto result = Reverse(c);
-	numbers = result;
-	if (IsNegative() && !number2.IsNegative())
+	digits = result;
+	if (IsNegative() && !number.IsNegative())
 	{
 		_isNegative = true;
 	}
-	else if (!IsNegative() && number2.IsNegative())
+	else if (!IsNegative() && number.IsNegative())
 	{
 		_isNegative = true;
 	}
@@ -246,9 +246,9 @@ BigInt& BigInt::operator*=(const BigInt& number2)
 	return *this;	
 }
 
-BigInt& BigInt::operator/=(const BigInt& number2)
+BigInt& BigInt::operator/=(const BigInt& number)
 {
-	if (number2.IsZero())
+	if (number.IsZero())
 	{
 		cerr<< "Division by zero";
 		cin.get();
@@ -258,18 +258,18 @@ BigInt& BigInt::operator/=(const BigInt& number2)
 	{
 		vector<int> temp;
 		temp.push_back(0);
-		numbers = temp;
+		digits = temp;
 		_isNegative = false;
 		return *this;
 	}
 
-	bool number2Bigger = Abs(*this).LessThan(Abs(number2));
+	bool number2Bigger = Abs(*this).LessThan(Abs(number));
 
 	if (number2Bigger)
 	{
 		vector<int> temp;
 		temp.push_back(0);
-		numbers = temp;
+		digits = temp;
 		_isNegative = false;
 		return *this;
 	}
@@ -283,7 +283,7 @@ BigInt& BigInt::operator/=(const BigInt& number2)
 	for (int i = 0; i < (*this).getLength(); ++i)
 	{
 		currentValue = currentValue * 10;
-		currentValue.numbers[currentValue.getLength() - 1] = (*this).numbers[i];
+		currentValue.digits[currentValue.getLength() - 1] = (*this).digits[i];
 
 		int x = 0;
 		int left = 0;
@@ -293,7 +293,7 @@ BigInt& BigInt::operator/=(const BigInt& number2)
 		{
 			int middle = (left + right) /2;
 
-			auto cur = Abs(number2) * middle;
+			auto cur = Abs(number) * middle;
 
 			if (Abs(cur) <= Abs(currentValue))
 			{
@@ -307,7 +307,7 @@ BigInt& BigInt::operator/=(const BigInt& number2)
 		}
 
 		res[i] = x;
-		currentValue = currentValue - Abs(number2) * BigInt(x);
+		currentValue = currentValue - Abs(number) * BigInt(x);
 	}
 
 	res = Reverse(res);
@@ -319,12 +319,12 @@ BigInt& BigInt::operator/=(const BigInt& number2)
 
 	res = Reverse(res);
 
-	numbers = res;
-	if (IsNegative() && !number2.IsNegative())
+	digits = res;
+	if (IsNegative() && !number.IsNegative())
 	{
 		_isNegative = true;
 	}
-	else if (!IsNegative() && number2.IsNegative())
+	else if (!IsNegative() && number.IsNegative())
 	{
 		_isNegative = true;
 	}
@@ -338,7 +338,7 @@ BigInt& BigInt::operator/=(const BigInt& number2)
 
 int BigInt::operator[](size_t index) const
 {
-	return numbers[index];
+	return digits[index];
 }
 
 BigInt::operator bool() const
@@ -372,7 +372,7 @@ BigInt& BigInt::operator=(const BigInt& other)
 {
 	if (this != &other)
 	{
-		numbers = other.numbers;
+		digits = other.digits;
 		_isNegative = other.IsNegative();
 	}
 	return *this;
@@ -403,7 +403,7 @@ bool BigInt::LessThan(BigInt const& other) const
 
 	for (int i = 0; i < getLength(); ++i)
 	{
-		if (numbers[i] < other[i])
+		if (digits[i] < other[i])
 		{
 			if (IsNegative())
 			{
@@ -411,7 +411,7 @@ bool BigInt::LessThan(BigInt const& other) const
 			}
 			return true;
 		}
-		if (numbers[i] > other[i])
+		if (digits[i] > other[i])
 		{
 			if (IsNegative())
 			{
@@ -443,7 +443,7 @@ int BigInt::Compare(BigInt const& other) const
 
 bool BigInt::IsZero() const
 {
-	if (numbers.size() == 1 && numbers[0] == 0)
+	if (digits.size() == 1 && digits[0] == 0)
 	{
 		return true;
 	}
@@ -465,13 +465,13 @@ vector<int> BigInt::Reverse(vector<int> const& numbers)
 
 void BigInt::EqualLength(BigInt const& b, vector<int>& number1, vector<int>& number2) const
 {
-	int diff_length = getLength() - b.getLength();
+	int diff = getLength() - b.getLength();
 
-	if (diff_length > 0)
+	if (diff > 0)
 	{
-		number1 = (*this).numbers;
+		number1 = (*this).digits;
 
-		for (int i = 0; i < diff_length; ++i)
+		for (int i = 0; i < diff; ++i)
 		{
 			number2.push_back(0);
 		}
@@ -481,14 +481,14 @@ void BigInt::EqualLength(BigInt const& b, vector<int>& number1, vector<int>& num
 			number2.push_back(b[i]);
 		}
 	}
-	else if (diff_length < 0)
+	else if (diff < 0)
 	{
 		for (int i = 0; i < b.getLength(); ++i)
 		{
 			number2.push_back(b[i]);
 		}
 
-		for (int i = 0; i < (diff_length * (-1)); ++i)
+		for (int i = 0; i < (diff * (-1)); ++i)
 		{
 			number1.push_back(0);
 		}
@@ -510,8 +510,7 @@ void BigInt::EqualLength(BigInt const& b, vector<int>& number1, vector<int>& num
 
 void BigInt::ToVector(string const& number)
 {
-	unsigned int from = 0;
-
+	auto from = 0;
 	if (number[0] == '-')
 	{
 		_isNegative = true;
@@ -521,11 +520,9 @@ void BigInt::ToVector(string const& number)
 	{
 		_isNegative = false;
 	}
-
-	for (unsigned int i = from; i < number.length(); ++i)
+	for (auto i = from; i < number.length(); i++)
 	{
-		int ia = number[i] - '0';
-		numbers.push_back(ia);
+		digits.push_back(number[i] - '0');
 	}
 }
 
@@ -543,7 +540,7 @@ void BigInt::ToVector(long long a)
 
 	if (a == 0)
 	{
-		numbers.push_back(0);
+		digits.push_back(0);
 	}
 
 	vector<int> temp;
@@ -557,7 +554,7 @@ void BigInt::ToVector(long long a)
 
 	for (int i = temp.size() - 1; i >= 0; --i)
 	{
-		numbers.push_back(temp[i]);
+		digits.push_back(temp[i]);
 	}
 }
 
@@ -565,10 +562,7 @@ BigInt Abs(BigInt number)
 {
 	BigInt n(number);
 	BigInt zero(0);
-
-	bool is_less = n.LessThan(zero);
-
-	if (is_less)
+	if (n.LessThan(zero))
 	{
 		n *= BigInt(-1);
 	}
@@ -643,28 +637,28 @@ istream& operator >> (istream& is, BigInt& obj)
 	return is;
 }
 
-BigInt operator+(const BigInt& lhs, const BigInt& rhs)
+BigInt operator+(const BigInt& left, const BigInt& right)
 {
-	auto temp(lhs);
-	return temp += rhs;
+	auto temp(left);
+	return temp += right;
 }
 
-BigInt operator-(const BigInt& lhs, const BigInt& rhs)
+BigInt operator-(const BigInt& left, const BigInt& right)
 {
-	auto temp(lhs);
-	return temp -= rhs;
+	auto temp(left);
+	return temp -= right;
 }
 
-BigInt operator*(const BigInt& lhs, const BigInt& rhs)
+BigInt operator*(const BigInt& left, const BigInt& right)
 {
-	auto temp(lhs);
-	return temp *= rhs;
+	auto temp(left);
+	return temp *= right;
 }
 
-BigInt operator/(const BigInt& lhs, const BigInt& rhs)
+BigInt operator/(const BigInt& left, const BigInt& right)
 {
-	auto temp(lhs);
-	return temp /= rhs;
+	auto temp(left);
+	return temp /= right;
 }
 
 bool operator<=(const BigInt& left, const BigInt& right)

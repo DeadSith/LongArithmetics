@@ -46,7 +46,7 @@ public:
 private:
 	bool LessThan(BigInt const& number) const;
 	bool _isNegative;
-	vector<int> numbers;
+	vector<int> digits;
 
 	static vector<int> Reverse(vector<int> const& numbers);
 	void EqualLength(const BigInt& b, vector<int> & number1, vector<int> & number2) const;
