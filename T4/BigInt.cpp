@@ -336,6 +336,13 @@ BigInt& BigInt::operator/=(const BigInt& number)
 	return *this;
 }
 
+//Знак залежить від знаку першого числа
+BigInt& BigInt::operator%=(const BigInt& number)
+{
+	(*this) = (*this) - ((*this) / number)*number;
+	return *this;
+}
+
 int BigInt::operator[](size_t index) const
 {
 	return digits[index];
@@ -449,6 +456,55 @@ bool BigInt::IsZero() const
 	}
 
 	return false;
+}
+
+bool BigInt::IsPrime(BigInt number)
+{
+	if (number <= 1) return false;
+	if (number <= 3) return true;
+	if (number%2==0||number%3==0)
+		return false;
+	unsigned long long k = 1;
+	BigInt b(6*k-1);
+	/*if (b % 6 == 0)
+		return true;
+	b -= 2;
+	if (b % 6 == 0)
+		return true;
+	return false;*/	
+	 while (b*b<=number)
+	{
+		if (number%b == 0)
+			return false;
+		b += 2;
+		if (number%b == 0)
+			return false;
+		k++;
+		b = 6 * k - 1;
+	}
+	return true;
+}
+
+BigInt BigInt::Pow(const BigInt& number, unsigned int power)
+{
+	if (power == 0)
+		return 1;
+	if (power == 1)
+		return number;
+	BigInt res(number);
+	for (unsigned i = 1; i < power; i++)
+		res *= number;
+	return res;
+}
+
+BigInt BigInt::Factorial(unsigned n)
+{
+	if (n < 2)
+		return 1;
+	BigInt res(2);
+	for (unsigned i = 3; i <= n; i++)
+		res *= i;
+	return res;
 }
 
 vector<int> BigInt::Reverse(vector<int> const& numbers)
@@ -659,6 +715,12 @@ BigInt operator/(const BigInt& left, const BigInt& right)
 {
 	auto temp(left);
 	return temp /= right;
+}
+
+BigInt operator%(const BigInt& left, const BigInt& right)
+{
+	auto temp(left);
+	return temp %= right;
 }
 
 bool operator<=(const BigInt& left, const BigInt& right)

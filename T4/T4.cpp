@@ -27,14 +27,19 @@ void test()
 	res = BigInt("-359712230");
 	auto c = a / b;
 	assert(a / b == res);
+	a = 500000;
+	b = 2500;
+	assert(a%b == 0);
 }
 
 int main()
 {
-	//test();
-	BigInt a("-27");
-	BigInt b("12");
-	cout << a/b<<endl;
+	//test();	
+	auto p = BigInt::Pow(2, 50) + 1;
+	cout << BigInt::IsPrime(p) << endl;
+	cout << BigInt::Pow(2, 10) <<endl;
+	cout << BigInt::Pow(2, 100) << endl;
+	cout << BigInt::Factorial(100) << endl;
 	cin.get();
 	return 0;
 }
