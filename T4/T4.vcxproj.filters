@@ -24,12 +24,18 @@
     <ClInclude Include="BigInt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="lint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="T4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BigInt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

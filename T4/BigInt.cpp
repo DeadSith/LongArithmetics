@@ -1,5 +1,4 @@
 #include <string>
-#include <sstream>
 #include <vector>
 #include "BigInt.h"
 
@@ -14,11 +13,6 @@ BigInt::BigInt()
 }
 
 BigInt::BigInt(long long number)
-{
-	ToVector(number);
-}
-
-BigInt::BigInt(int number)
 {
 	ToVector(number);
 }
@@ -48,20 +42,20 @@ bool BigInt::IsNegative() const
 	return _isNegative;
 }
 
-BigInt& BigInt::operator+=(const BigInt& b)
+BigInt& BigInt::operator+=(const BigInt& number)
 {
-	if (!IsNegative() && b.IsNegative())
+	if (!IsNegative() && number.IsNegative())
 	{
-		BigInt temp(b);
+		BigInt temp(number);
 		temp = Abs(temp);
 		return operator-=(temp);
 	}
 
-	if (IsNegative() && !b.IsNegative())
+	if (IsNegative() && !number.IsNegative())
 	{
 		auto thisValue = BigInt(*this);
 		thisValue._isNegative = false;
-		auto temp = BigInt(b);
+		auto temp = BigInt(number);
 		temp -= thisValue;
 		*this = temp;
 		return *this;
@@ -70,7 +64,7 @@ BigInt& BigInt::operator+=(const BigInt& b)
 	vector<int> number1;
 	vector<int> number2;
 
-	EqualLength(b, number1, number2);
+	EqualLength(number, number1, number2);
 
 	vector<int> result;
 	int rest = 0;
@@ -97,31 +91,31 @@ BigInt& BigInt::operator+=(const BigInt& b)
 		result.push_back(rest);
 	}
 
-	vector<int> reverse_result = Reverse(result);
+	auto reverse_result = Reverse(result);
 
 	(*this).numbers = reverse_result;
 
 	return *this;
 }
 
-BigInt& BigInt::operator-=(const BigInt& b)
+BigInt& BigInt::operator-=(const BigInt& number)
 {
-	if (!IsNegative() && b.IsNegative())
+	if (!IsNegative() && number.IsNegative())
 	{
-		return (*this)+=(Abs(b));
+		return (*this)+=(Abs(number));
 	}
 
-	if (IsNegative() && !b.IsNegative())
+	if (IsNegative() && !number.IsNegative())
 	{
-		auto temp(b);
+		auto temp(number);
 		temp._isNegative = true;
-		return (*this)+=(temp);
+		return *this+=(temp);
 	}
 
 	vector<int> number1;
 	vector<int> number2;
 
-	EqualLength(b, number1, number2);
+	EqualLength(number, number1, number2);
 
 	int number1Bigger = 0;
 
@@ -179,26 +173,24 @@ BigInt& BigInt::operator-=(const BigInt& b)
 			result.push_back(res);
 		}
 	}
-
-	auto can_copy = false;
-	vector<int> result_without_zero;
-
+	vector<int> clearResult;//результат без нулів
+	auto copy = false;
 	for (int i = result.size() - 1; i >= 0; --i)
-	{
+		{		
 		if (result[i] != 0)
 		{
-			can_copy = true;
+			copy = true;
 		}
 
-		if (can_copy)
+		if (copy)
 		{
-			result_without_zero.push_back(result[i]);
+			clearResult.push_back(result[i]);
 		}
 	}
 
-	(*this).numbers = result_without_zero;
+	(*this).numbers = clearResult;
 
-	if (!IsNegative() && !b.IsNegative())
+	if (!IsNegative() && !number.IsNegative())
 	{
 		if (number1Bigger == -1)
 		{
@@ -206,7 +198,7 @@ BigInt& BigInt::operator-=(const BigInt& b)
 		}
 	}
 
-	if (IsNegative() && b.IsNegative())
+	if (IsNegative() && number.IsNegative())
 	{
 		if (number1Bigger == -1)
 		{
@@ -219,33 +211,25 @@ BigInt& BigInt::operator-=(const BigInt& b)
 
 BigInt& BigInt::operator*=(const BigInt& number2)
 {
-	vector<int> a = Reverse(numbers);
-	vector<int> b = Reverse(number2.numbers);
-
+	auto a = Reverse(numbers);
+	auto b = Reverse(number2.numbers);
 	vector<int> c(a.size() + b.size(), 0);
-
-	for (size_t i = 0; i < a.size(); ++i)
+	for (auto i = 0; i < a.size(); i++)
 	{
 		int carry = 0;
-
-		for (unsigned int j = 0; j < b.size() || carry; ++j)
+		for (auto j = 0; j < b.size() || carry; j++)
 		{
-			long long cur = c[i + j] + a[i] * 1ll * (j < b.size() ? b[j] : 0) + carry;
-
+			auto cur = c[i + j] + a[i]  * (j<b.size()?b[j]:0) + carry;
 			c[i + j] = int(cur % 10);
 			carry = int(cur / 10);
 		}
 	}
-
 	while (c.size() > 1 && c.back() == 0)
 	{
 		c.pop_back();
 	}
-
-	vector<int> result = Reverse(c);
-
+	auto result = Reverse(c);
 	numbers = result;
-
 	if (IsNegative() && !number2.IsNegative())
 	{
 		_isNegative = true;
@@ -259,16 +243,17 @@ BigInt& BigInt::operator*=(const BigInt& number2)
 		_isNegative = false;
 	}
 
-	return *this;
+	return *this;	
 }
 
 BigInt& BigInt::operator/=(const BigInt& number2)
 {
 	if (number2.IsZero())
 	{
-		throw "Division by zero";
+		cerr<< "Division by zero";
+		cin.get();
+		exit(-1);
 	}
-
 	if (IsZero())
 	{
 		vector<int> temp;
@@ -278,7 +263,7 @@ BigInt& BigInt::operator/=(const BigInt& number2)
 		return *this;
 	}
 
-	bool number2Bigger = Abs(*this)._Compare(Abs(number2));
+	bool number2Bigger = Abs(*this).LessThan(Abs(number2));
 
 	if (number2Bigger)
 	{
@@ -290,35 +275,34 @@ BigInt& BigInt::operator/=(const BigInt& number2)
 	}
 
 	vector<int> res;
-	for (int i = (*this).getLength() - 1; i >= 0; --i)
+	for (int i = 0; i < (*this).getLength(); i++)
 	{
 		res.push_back(0);
 	}
-
 	BigInt currentValue(0);
 	for (int i = 0; i < (*this).getLength(); ++i)
 	{
-		currentValue = currentValue * BigInt(10);
+		currentValue = currentValue * 10;
 		currentValue.numbers[currentValue.getLength() - 1] = (*this).numbers[i];
 
 		int x = 0;
-		int left_index = 0;
-		int right_index = 10;
+		int left = 0;
+		int right = 10;
 
-		while (left_index <= right_index)
+		while (left <= right)
 		{
-			int middle = (left_index + right_index)/2;
+			int middle = (left + right) /2;
 
-			auto cur = Abs(number2) * BigInt(middle);
+			auto cur = Abs(number2) * middle;
 
 			if (Abs(cur) <= Abs(currentValue))
 			{
 				x = middle;
-				left_index = middle + 1;
+				left = middle + 1;
 			}
 			else
 			{
-				right_index = middle - 1;
+				right = middle - 1;
 			}
 		}
 
@@ -336,7 +320,6 @@ BigInt& BigInt::operator/=(const BigInt& number2)
 	res = Reverse(res);
 
 	numbers = res;
-
 	if (IsNegative() && !number2.IsNegative())
 	{
 		_isNegative = true;
@@ -365,24 +348,24 @@ BigInt::operator bool() const
 
 BigInt BigInt::operator+() const
 {
-	BigInt temp(*this);
-	return temp;
+	BigInt res(*this);
+	return res;
 }
 
 BigInt BigInt::operator-() const
 {
-	BigInt temp(*this);
+	BigInt res(*this);
 
 	if (IsNegative())
 	{
-		temp._isNegative = false;
+		res._isNegative = false;
 	}
 	else
 	{
-		temp._isNegative = true;
+		res._isNegative = true;
 	}
 
-	return temp;
+	return res;
 }
 
 BigInt& BigInt::operator=(const BigInt& other)
@@ -396,31 +379,31 @@ BigInt& BigInt::operator=(const BigInt& other)
 }
 
 //порівнює
-bool BigInt::_Compare(BigInt const& rhs) const
+bool BigInt::LessThan(BigInt const& other) const
 {
-	if (IsNegative() && !rhs.IsNegative())
+	if (IsNegative() && !other.IsNegative())
 	{
 		return true;
 	}
 
-	if (!IsNegative() && rhs.IsNegative())
+	if (!IsNegative() && other.IsNegative())
 	{
 		return false;
 	}
 
-	if (getLength() < rhs.getLength())
+	if (getLength() < other.getLength())
 	{
 		return true;
 	}
 
-	if (getLength() > rhs.getLength())
+	if (getLength() > other.getLength())
 	{
 		return false;
 	}
 
 	for (int i = 0; i < getLength(); ++i)
 	{
-		if (numbers[i] < rhs[i])
+		if (numbers[i] < other[i])
 		{
 			if (IsNegative())
 			{
@@ -428,7 +411,7 @@ bool BigInt::_Compare(BigInt const& rhs) const
 			}
 			return true;
 		}
-		if (numbers[i] > rhs[i])
+		if (numbers[i] > other[i])
 		{
 			if (IsNegative())
 			{
@@ -442,13 +425,13 @@ bool BigInt::_Compare(BigInt const& rhs) const
 }
 
 //обгортка для порівняння
-int BigInt::Compare(BigInt const& rhs) const
+int BigInt::Compare(BigInt const& other) const
 {
-	if ((*this)._Compare(rhs))
+	if ((*this).LessThan(other))
 	{
 		return -1;
 	}
-	if (rhs._Compare(*this))
+	if (other.LessThan(*this))
 	{
 		return 1;
 	}
@@ -466,34 +449,6 @@ bool BigInt::IsZero() const
 	}
 
 	return false;
-}
-
-string int_to_string(int i)
-{
-	stringstream ss;
-	string s;
-	ss << i;
-	s = ss.str();
-
-	return s;
-}
-
-string BigInt::ToString() const
-{
-	string result = "";
-
-	if (IsNegative() && !IsZero())
-	{
-		result += "-";
-	}
-
-	for (int i = 0; i < getLength(); ++i)
-	{
-		int a = (*this)[i];
-		result += int_to_string(a);
-	}
-
-	return result;
 }
 
 vector<int> BigInt::Reverse(vector<int> const& numbers)
@@ -611,7 +566,7 @@ BigInt Abs(BigInt number)
 	BigInt n(number);
 	BigInt zero(0);
 
-	bool is_less = n._Compare(zero);
+	bool is_less = n.LessThan(zero);
 
 	if (is_less)
 	{

@@ -11,11 +11,9 @@ public:
 
 	BigInt();
 
-	explicit BigInt(long long number);
+	BigInt(long long number);
 
-	explicit BigInt(int number);
-
-	BigInt(vector<int> nums, bool is_neg);
+	BigInt(vector<int> nums, bool isNegative);
 
 	BigInt(const BigInt &obj);
 
@@ -23,13 +21,13 @@ public:
 
 	bool IsNegative() const;
 
-	BigInt& operator+=(const BigInt& b);
+	BigInt& operator+=(const BigInt& number);
 
-	BigInt& operator-=(const BigInt& b);
+	BigInt& operator-=(const BigInt& number);
 
-	BigInt& operator*=(const BigInt& number2);
+	BigInt& operator*=(const BigInt& number);
 
-	BigInt& operator/=(const BigInt& b);
+	BigInt& operator/=(const BigInt& number);
 
 	int operator[](size_t index) const;
 
@@ -41,25 +39,19 @@ public:
 
 	BigInt& operator=(const BigInt& other);
 
-	int Compare(BigInt const& rhs) const;
+	int Compare(BigInt const& other) const;
 
-	bool IsZero() const;
-
-	string ToString() const;
+	bool IsZero() const;	
 
 private:
-	bool _Compare(BigInt const& rhs) const;
+	bool LessThan(BigInt const& number) const;
 	bool _isNegative;
 	vector<int> numbers;
 
 	static vector<int> Reverse(vector<int> const& numbers);
-
 	void EqualLength(const BigInt& b, vector<int> & number1, vector<int> & number2) const;
-
 	void ToVector(string const& number);
-
 	void ToVector(long long a);
-
 	friend BigInt Abs(BigInt number);
 
 	friend ostream& operator<<(ostream& os, const BigInt& obj);
@@ -68,7 +60,7 @@ private:
 	friend BigInt operator+(const BigInt& left, const BigInt& right);
 	friend BigInt operator-(const BigInt& left, const BigInt& right);
 	friend BigInt operator*(const BigInt& left, const BigInt& right);
-	friend BigInt operator/(const BigInt& lhs, const BigInt& rhs);
+	friend BigInt operator/(const BigInt& left, const BigInt& right);
 
 	friend bool operator<=(const BigInt& left, const BigInt& right);
 	friend bool operator>=(const BigInt& left, const BigInt& right);
@@ -77,20 +69,3 @@ private:
 	friend bool operator<(const BigInt& left, const BigInt& right);
 	friend bool operator>(const BigInt& left, const BigInt& right);
 };
-
-/*BigInt Abs(BigInt number);
-
-ostream& operator<<(ostream& os, const BigInt& obj);
-istream& operator >> (istream& is, BigInt& obj);
-
-BigInt operator+(const BigInt& left, const BigInt& right);
-BigInt operator-(const BigInt& left, const BigInt& right);
-BigInt operator*(const BigInt& left, const BigInt& right);
-BigInt operator/(const BigInt& lhs, const BigInt& rhs);
-
-bool operator<=(const BigInt& left, const BigInt& right);
-bool operator>=(const BigInt& left, const BigInt& right);
-bool operator==(const BigInt& left, const BigInt& right);
-bool operator!=(const BigInt& left, const BigInt& right);
-bool operator<(const BigInt& left, const BigInt& right);
-bool operator>(const BigInt& left, const BigInt& right);*/
