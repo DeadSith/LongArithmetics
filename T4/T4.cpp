@@ -34,12 +34,12 @@ void test()
 
 int main()
 {
-	//test();	
-	auto p = BigInt::Pow(2, 50) + 1;
+	test();	
+	/*auto p = BigInt::Pow(2, 50) + 1;
 	cout << BigInt::IsPrime(p) << endl;
 	cout << BigInt::Pow(2, 10) <<endl;
 	cout << BigInt::Pow(2, 100) << endl;
-	cout << BigInt::Factorial(100) << endl;
+	cout << BigInt::Factorial(100) << endl;*/
 	cin.get();
 	return 0;
 }

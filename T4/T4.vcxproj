@@ -145,12 +145,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BigInt.h" />
-    <ClInclude Include="lint.h" />
+    <ClInclude Include="customVector.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BigInt.cpp" />
-    <ClCompile Include="lint.cpp" />
+    <ClCompile Include="customVector.cpp" />
     <ClCompile Include="T4.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

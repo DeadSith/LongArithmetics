@@ -12,6 +12,7 @@ public:
 	BigInt(long long number);
 	BigInt(vector<int> nums, bool isNegative);
 	BigInt(const BigInt &obj);
+	~BigInt();
 
 	int getLength() const;
 	bool IsNegative() const;

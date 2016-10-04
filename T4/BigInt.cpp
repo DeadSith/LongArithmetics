@@ -26,10 +26,15 @@ BigInt::BigInt(vector<int> nums, bool is_neg)
 BigInt::BigInt(const BigInt &obj) {
 	_isNegative = obj.IsNegative();
 
-	for (int t : obj.digits)
+	for (int d : obj.digits)
 	{
-		digits.push_back(t);
+		digits.push_back(d);
 	}
+}
+
+BigInt::~BigInt()
+{
+	digits.clear();
 }
 
 int BigInt::getLength() const
@@ -280,6 +285,7 @@ BigInt& BigInt::operator/=(const BigInt& number)
 		res.push_back(0);
 	}
 	BigInt currentValue(0);
+	auto abs = Abs(number);
 	for (int i = 0; i < (*this).getLength(); ++i)
 	{
 		currentValue = currentValue * 10;
@@ -293,7 +299,7 @@ BigInt& BigInt::operator/=(const BigInt& number)
 		{
 			int middle = (left + right) /2;
 
-			auto cur = Abs(number) * middle;
+			auto cur = abs * middle;
 
 			if (Abs(cur) <= Abs(currentValue))
 			{
@@ -307,7 +313,7 @@ BigInt& BigInt::operator/=(const BigInt& number)
 		}
 
 		res[i] = x;
-		currentValue = currentValue - Abs(number) * BigInt(x);
+		currentValue = currentValue - abs * x;
 	}
 
 	res = Reverse(res);
@@ -466,12 +472,6 @@ bool BigInt::IsPrime(BigInt number)
 		return false;
 	unsigned long long k = 1;
 	BigInt b(6*k-1);
-	/*if (b % 6 == 0)
-		return true;
-	b -= 2;
-	if (b % 6 == 0)
-		return true;
-	return false;*/	
 	 while (b*b<=number)
 	{
 		if (number%b == 0)
@@ -507,13 +507,13 @@ BigInt BigInt::Factorial(unsigned n)
 	return res;
 }
 
-vector<int> BigInt::Reverse(vector<int> const& numbers)
+vector<int> BigInt::Reverse(vector<int> const& digits)
 {
 	vector<int> reverse_result;
 
-	for (int i = numbers.size() - 1; i >= 0; --i)
+	for (int i = digits.size() - 1; i >= 0; --i)
 	{
-		reverse_result.push_back(numbers[i]);
+		reverse_result.push_back(digits[i]);
 	}
 
 	return reverse_result;
@@ -616,13 +616,8 @@ void BigInt::ToVector(long long a)
 
 BigInt Abs(BigInt number)
 {
-	BigInt n(number);
-	BigInt zero(0);
-	if (n.LessThan(zero))
-	{
-		n *= BigInt(-1);
-	}
-	return n;
+	number._isNegative = false;
+	return number;
 }
 
 ostream& operator<<(ostream& os, const BigInt& obj)
@@ -649,7 +644,7 @@ istream& operator >> (istream& is, BigInt& obj)
 	while (is.good())
 	{
 		char c = static_cast<char>(is.get());
-		int ic = c - '0';
+		int intC = c - '0';
 
 		if (c == '\n')
 		{
@@ -676,12 +671,12 @@ istream& operator >> (istream& is, BigInt& obj)
 			{
 				negative = false;
 			}
-			else if (ic == 0 && leadZeros)
+			else if (intC == 0 && leadZeros)
 			{
 			}
 			else
 			{
-				numbers.push_back(ic);
+				numbers.push_back(intC);
 				leadZeros = false;
 			}
 		}

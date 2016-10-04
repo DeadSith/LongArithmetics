@@ -24,7 +24,7 @@
     <ClInclude Include="BigInt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="lint.h">
+    <ClInclude Include="customVector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,7 +35,7 @@
     <ClCompile Include="BigInt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lint.cpp">
+    <ClCompile Include="customVector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
