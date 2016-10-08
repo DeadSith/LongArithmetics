@@ -30,13 +30,14 @@ public:
 	BigInt& operator=(const BigInt& other);
 
 	int Compare(BigInt const& other) const;
-	bool IsZero() const;	
+	bool IsZero() const;
+    vector<int> getDigits() const;
 
 	static bool IsPrime(BigInt number);
 	static BigInt Pow(const BigInt& number, unsigned int power);
 	static BigInt Factorial(unsigned n);
 
-private:
+protected:
 	bool LessThan(BigInt const& number) const;
 	bool _isNegative;
 	vector<int> digits;
