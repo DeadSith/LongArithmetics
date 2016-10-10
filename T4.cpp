@@ -32,12 +32,17 @@ void test()
     assert(a % b == 0);
     a = 15;
     b = 606;
-    assert(b.GCD(a)==a.GCD(b));
-    assert(a.GCD(b)==3);
+    assert(b.GCD(a) == a.GCD(b));
+    assert(a.GCD(b) == 3);
     b = 605;
-    assert(a.GCD(b)==5);
+    assert(a.GCD(b) == 5);
     b = 600;
-    assert(b.GCD(a)==15);
+    assert(b.GCD(a) == 15);
+    a = 3;
+    b = 5;
+    assert(a.LCM(b) == 15);
+    a = 8;
+    assert(a.Root(3)==2);
 }
 
 int main()
@@ -50,6 +55,8 @@ int main()
     cout << BigIntInherited::Pow(2, 10) <<endl;
     cout << BigIntInherited::Pow(2, 100) << endl;
     cout << BigIntInherited::Factorial(100) << endl;*/
+    BigIntInherited a = 27;
+    cout<< a.Root(3)<<endl;
     cin.get();
     return 0;
 }

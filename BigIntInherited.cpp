@@ -126,14 +126,14 @@ BigIntInherited BigIntInherited::operator--(int)
     return *this;
 }
 
-BigIntInherited BigIntInherited::GCD(const BigIntInherited& other) const
+BigIntInherited BigIntInherited::GCD(const BigIntInherited &other) const
 {
-    if( *this < other )
+    if (*this < other) {
         return other.GCD(*this);
+    }
     BigIntInherited x(*this);
     BigIntInherited y(other);
-    while( y > 0 )
-    {
+    while (y > 0) {
         BigIntInherited f(x % y);
         x = y;
         y = f;
@@ -146,6 +146,37 @@ BigIntInherited::BigIntInherited(BigInt parent)
     this->digits = parent.getDigits();
     this->_isNegative = parent.IsNegative();
     this->_color = 30;
+}
+
+BigIntInherited BigIntInherited::LCM(const BigIntInherited &other) const
+{
+    return *this / other.GCD(*this) * other;
+}
+
+//Returns n-th root of number or the closest n-th root of numbers smaller to it
+BigIntInherited BigIntInherited::Root(int n) const
+{
+    if (n % 2 == 0 && *this < 1) {
+        return 0;
+    }
+    if (*this == 0) {
+        return 0;
+    }
+    BigIntInherited start(1);
+    BigIntInherited end(*this);
+    BigIntInherited middle = (start + end) / 2;
+    BigIntInherited pow = BigIntInherited::Pow(middle, n);
+    while (pow != *this) {
+        if (pow > *this) {
+            end = middle;
+        } else { start = middle; }
+        middle = (start + end) / 2;
+        if (middle == start || middle == end) {
+            break;
+        }
+        pow = BigIntInherited::Pow(middle, n);
+    }
+    return middle;
 }
 
 

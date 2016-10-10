@@ -23,6 +23,8 @@ public:
     BigIntInherited operator --();
     BigIntInherited operator --(int);
     BigIntInherited GCD(const BigIntInherited& other) const;
+    BigIntInherited LCM(const BigIntInherited& other) const;
+    BigIntInherited Root(int n) const;
 private:
     void _setColor(int color);
     int _color;
