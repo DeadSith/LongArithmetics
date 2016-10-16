@@ -28,7 +28,8 @@ BigIntInherited::BigIntInherited(const BigIntInherited &obj)
 {
     _isNegative = obj.IsNegative();
     digits.clear();
-    for (int d : obj.digits) {
+    for (int d : obj.digits)
+    {
         digits.push_back(d);
     }
     _color = obj._color;
@@ -36,14 +37,16 @@ BigIntInherited::BigIntInherited(const BigIntInherited &obj)
 
 void BigIntInherited::_setColor(int color)
 {
-    if (color > 29 && color < 38) {
+    if (color > 29 && color < 38)
+    {
         _color = color;
-    } else { _color = 30; }
+    }
+    else
+    { _color = 30; }
 }
 
 ostream &operator<<(ostream &os, const BigIntInherited &obj)
 {
-    
     os << "\033[0;" << obj._color << "m";
     os << (BigInt) obj;
     os << "\033[0;" << 30 << "m";
@@ -52,7 +55,8 @@ ostream &operator<<(ostream &os, const BigIntInherited &obj)
 
 BigIntInherited &BigIntInherited::operator=(const BigIntInherited &other)
 {
-    if (this != &other) {
+    if (this != &other)
+    {
         digits = other.digits;
         _isNegative = other.IsNegative();
         _color = other._color;
@@ -65,30 +69,42 @@ istream &operator>>(istream &is, BigIntInherited &obj)
     bool leadZeros = true;
     bool negative = false;
     vector<int> numbers;
-    
-    while (is.good()) {
+
+    while (is.good())
+    {
         char c = static_cast<char>(is.get());
         int intC = c - '0';
-        
-        if (c == '\n') {
+
+        if (c == '\n')
+        {
             break;
         }
-        
-        if (c == EOF) {
+
+        if (c == EOF)
+        {
             break;
         }
-        
-        if (c == '\0') {
+
+        if (c == '\0')
+        {
             break;
         }
-        
-        if (is.good()) {
-            if (c == '-') {
+
+        if (is.good())
+        {
+            if (c == '-')
+            {
                 negative = true;
-            } else if (c == '+') {
+            }
+            else if (c == '+')
+            {
                 negative = false;
-            } else if (intC == 0 && leadZeros) {
-            } else {
+            }
+            else if (intC == 0 && leadZeros)
+            {
+            }
+            else
+            {
                 numbers.push_back(intC);
                 leadZeros = false;
             }
@@ -128,12 +144,14 @@ BigIntInherited BigIntInherited::operator--(int)
 
 BigIntInherited BigIntInherited::GCD(const BigIntInherited &other) const
 {
-    if (*this < other) {
+    if (*this < other)
+    {
         return other.GCD(*this);
     }
     BigIntInherited x(*this);
     BigIntInherited y(other);
-    while (y > 0) {
+    while (y > 0)
+    {
         BigIntInherited f(x % y);
         x = y;
         y = f;
@@ -156,22 +174,29 @@ BigIntInherited BigIntInherited::LCM(const BigIntInherited &other) const
 //Returns n-th root of number or the closest n-th root of numbers smaller to it
 BigIntInherited BigIntInherited::Root(int n) const
 {
-    if (n % 2 == 0 && *this < 1) {
+    if (n % 2 == 0 && *this < 1)
+    {
         return 0;
     }
-    if (*this == 0) {
+    if (*this == 0)
+    {
         return 0;
     }
     BigIntInherited start(1);
     BigIntInherited end(*this);
     BigIntInherited middle = (start + end) / 2;
     BigIntInherited pow = BigIntInherited::Pow(middle, n);
-    while (pow != *this) {
-        if (pow > *this) {
+    while (pow != *this)
+    {
+        if (pow > *this)
+        {
             end = middle;
-        } else { start = middle; }
+        }
+        else
+        { start = middle; }
         middle = (start + end) / 2;
-        if (middle == start || middle == end) {
+        if (middle == start || middle == end)
+        {
             break;
         }
         pow = BigIntInherited::Pow(middle, n);

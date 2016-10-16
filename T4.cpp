@@ -3,29 +3,31 @@
 #include "BigInt.h"
 #include "assert.h"
 #include "BigIntInherited.h"
+#include "BigIntAggregated.h"
 
 void test()
 {
-    BigIntInherited a("120");
-    BigIntInherited b("0");
+    BigIntAggregated a("120");
+    BigIntAggregated b("0");
     assert(a - b == a);
     assert(a + b == a);
     assert(a * b == b);
-    a = BigIntInherited("120134");
-    b = BigIntInherited("213");
+    a = BigIntAggregated("120134");
+    b = BigIntAggregated("213");
     assert(a / b == 564);
     assert(a * b == 25588542);
-    a = BigIntInherited(
+    a = BigIntAggregated(
             "100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001");
-    b = BigIntInherited("9999999999999999931398190359470212947659194368");
-    BigIntInherited res("10000000000000000068601809640529787522961634227");
+    b = BigIntAggregated("9999999999999999931398190359470212947659194368");
+    BigIntAggregated res("10000000000000000068601809640529787522961634227");
     assert(a / b == res);
     a = -5;
     b = 2;
-    BigIntInherited(a / b == -2);
+    assert(a / b == -2);
+    assert(a==-5);
     a = 100000000175;
     b = -278;
-    res = BigIntInherited("-359712230");
+    res = BigIntAggregated("-359712230");
     assert(a / b == res);
     a = 500000;
     b = 2500;
@@ -42,7 +44,7 @@ void test()
     b = 5;
     assert(a.LCM(b) == 15);
     a = 8;
-    assert(a.Root(3)==2);
+    assert(a.Root(3) == 2);
 }
 
 int main()
@@ -56,7 +58,7 @@ int main()
     cout << BigIntInherited::Pow(2, 100) << endl;
     cout << BigIntInherited::Factorial(100) << endl;*/
     BigIntInherited a = 27;
-    cout<< a.Root(3)<<endl;
+    cout << a.Root(3) << endl;
     cin.get();
     return 0;
 }
