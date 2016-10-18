@@ -24,7 +24,7 @@ void test()
     a = -5;
     b = 2;
     assert(a / b == -2);
-    assert(a==-5);
+    assert(a == -5);
     a = 100000000175;
     b = -278;
     res = BigIntAggregated("-359712230");
@@ -57,8 +57,10 @@ int main()
     cout << BigIntInherited::Pow(2, 10) <<endl;
     cout << BigIntInherited::Pow(2, 100) << endl;
     cout << BigIntInherited::Factorial(100) << endl;*/
-    BigIntInherited a = 27;
-    cout << a.Root(3) << endl;
+    BigIntAggregated a;
+    cin>>a;
+    (a++)++;
+    cout << a << endl;
     cin.get();
     return 0;
 }

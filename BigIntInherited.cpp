@@ -118,25 +118,25 @@ istream &operator>>(istream &is, BigIntInherited &obj)
     return is;
 }
 
-BigIntInherited BigIntInherited::operator++()
+BigIntInherited& BigIntInherited::operator++()
 {
     *this += 1;
     return *this;
 }
 
-BigIntInherited BigIntInherited::operator++(int)
+BigIntInherited& BigIntInherited::operator++(int)
 {
     *this += 1;
     return *this;
 }
 
-BigIntInherited BigIntInherited::operator--()
+BigIntInherited& BigIntInherited::operator--()
 {
     *this -= 1;
     return *this;
 }
 
-BigIntInherited BigIntInherited::operator--(int)
+BigIntInherited& BigIntInherited::operator--(int)
 {
     *this -= 1;
     return *this;

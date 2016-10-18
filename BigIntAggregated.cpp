@@ -60,25 +60,25 @@ BigIntAggregated &BigIntAggregated::operator=(const BigIntAggregated &other)
     return *this;
 }
 
-BigIntAggregated BigIntAggregated::operator++()
+BigIntAggregated& BigIntAggregated::operator++()
 {
     *this += 1;
     return *this;
 }
 
-BigIntAggregated BigIntAggregated::operator++(int)
+BigIntAggregated& BigIntAggregated::operator++(int)
 {
     *this += 1;
     return *this;
 }
 
-BigIntAggregated BigIntAggregated::operator--()
+BigIntAggregated& BigIntAggregated::operator--()
 {
     *this -= 1;
     return *this;
 }
 
-BigIntAggregated BigIntAggregated::operator--(int)
+BigIntAggregated& BigIntAggregated::operator--(int)
 {
     *this -= 1;
     return *this;
@@ -156,15 +156,15 @@ BigIntAggregated &BigIntAggregated::operator%=(const BigIntAggregated &other)
     return *this;
 }
 
-ostream &BigIntAggregated::operator<<(ostream &os)
+ostream &operator<<(ostream &os, const BigIntAggregated& obj)
 {
-    os << "\033[0;" << this->_color << "m";
-    os << this->_bigInt;
+    os << "\033[0;" << obj._color << "m";
+    os << obj._bigInt;
     os << "\033[0;" << 30 << "m";
     return os;
 }
 
-istream &BigIntAggregated::operator>>(istream &is)
+istream &operator>>(istream &is, BigIntAggregated& obj)
 {
     bool leadZeros = true;
     bool negative = false;
@@ -214,7 +214,7 @@ istream &BigIntAggregated::operator>>(istream &is)
     int color;
     is >> color;
     BigIntAggregated temp(numbers, negative, color);
-    *this = temp;
+    obj = temp;
     return is;
 }
 
